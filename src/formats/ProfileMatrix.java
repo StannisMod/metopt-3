@@ -2,7 +2,13 @@ package formats;
 
 import api.Matrix;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class ProfileMatrix implements Matrix {
+
+    double[][] data;
 
     @Override
     public int getWidth() {
@@ -22,5 +28,11 @@ public class ProfileMatrix implements Matrix {
     @Override
     public void set(final int i, final int j, final double v) {
 
+    }
+
+    public void swap(int i, int j) {
+        List<double[]> list = Arrays.asList(data);
+        Collections.swap(list, i, j);
+        data = (double[][]) list.toArray();
     }
 }
