@@ -2,6 +2,9 @@ package formats;
 
 import api.Matrix;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -11,6 +14,10 @@ public class LMatrix implements Matrix {
 
     public LMatrix(final Matrix source) {
         this.source = source;
+    }
+
+    public void swap(int i, int j) {
+        source.swap(i, j);
     }
 
     @Override

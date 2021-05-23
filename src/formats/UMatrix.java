@@ -2,6 +2,9 @@ package formats;
 
 import api.Matrix;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -34,6 +37,10 @@ public class UMatrix implements Matrix {
     @Override
     public void set(final int i, final int j, final double v) {
         source.set(i, j, v);
+    }
+
+    public void swap(int i, int j) {
+        source.swap(i, j);
     }
 
     @Override

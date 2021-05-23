@@ -1,6 +1,7 @@
 import api.Matrix;
 import api.Method;
 import formats.PlainMatrix;
+import methods.Gauss;
 import methods.LUMethod;
 
 import java.util.Arrays;
