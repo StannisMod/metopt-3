@@ -3,7 +3,6 @@ package methods;
 import api.Matrix;
 import api.Method;
 import formats.LMatrix;
-import formats.PlainMatrix;
 import formats.UMatrix;
 
 public class LUMethod implements Method {
@@ -26,12 +25,12 @@ public class LUMethod implements Method {
         }
 
         double[] x = new double[n];
-        for (int i = 1; i < n; i++) {
+        for (int i = 1; i < n + 1; i++) {
             double v = 0;
-            for (int m = 0; m < i; m++) {
-                v += A.get(i, m) * x[m];
+            for (int m = n - i; m < n; m++) {
+                v += A.get(n - i, m) * x[m];
             }
-            x[i] =(y[i] - v) / A.get(i, i);
+            x[n - i] = (y[n - i] - v) / A.get(n - i, n - i);
         }
         return x;
     }
@@ -58,18 +57,5 @@ public class LUMethod implements Method {
                 }
             }
         }
-    }
-
-    Matrix mul(Matrix A, Matrix B) {
-        int n = A.getWidth();
-        Matrix R = new PlainMatrix(A.getWidth(), A.getHeight());
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                for (int k = 0; k < n; k++) {
-                    R.set(i, j, R.get(i, j) + A.get(i, k) * B.get(k, j));
-                }
-            }
-        }
-        return R;
     }
 }
