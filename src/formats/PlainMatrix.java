@@ -2,7 +2,6 @@ package formats;
 
 import api.Matrix;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -10,10 +9,14 @@ import java.util.stream.Collectors;
 
 public class PlainMatrix implements Matrix {
 
-    private double[][] data;
+    private final double[][] data;
 
     public PlainMatrix(int i, int j) {
         data = new double[i][j];
+    }
+
+    public double[][] getData() {
+        return data;
     }
 
     public void swap(int i, int j) {

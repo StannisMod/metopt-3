@@ -2,37 +2,126 @@ package formats;
 
 import api.Matrix;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-public class ProfileMatrix implements Matrix {
-
-    double[][] data;
+public class ProfileMatrix implements Matrix{
+    int n;
+    double[] di;
+    int[] ia;
+    double[] al;
+    double[] au;
 
     @Override
     public int getWidth() {
-        return 0;
+        return n;
+    }
+
+    public ProfileMatrix (double[][] matrix) {
+        n = matrix.length;
+        di = new double[n];
+        ia = new int[n+1];
+        int last = 0;
+        int last2 = 0;
+        ia[0] = 1;
+        ia[1] = 1;
+        for (int i = 0; i < n; i++) {
+            di[i] = matrix[i][i];
+            if (i >= 1) {
+                int notZero = i;
+                for (int j = 0; j < i; j++) {
+                    if (matrix[i][j] != 0) {
+                        notZero = j;
+                        break;
+                    }
+                }
+                ia[i+1] = ia[i] + i - notZero;
+            }
+        }
+        al = new double[ia[n]-1];
+        au = new double[ia[n]-1];
+        for (int i = 0; i < n; i++) {
+            di[i] = matrix[i][i];
+            if (i >= 1) {
+                int notZero1 = 0, notZero2 = 0;
+                for (int j = 0; j < i; j++) {
+                    if (matrix[i][j] != 0) {
+                        notZero1 = j;
+                        for (int k = j; k < i; k++) {
+                            al[last++] = matrix[i][k];
+                        }
+                        break;
+                    }
+                }
+
+                for (int j = 0; j < i; j++) {
+                    if (matrix[j][i] != 0) {
+                        notZero2 = j;
+                        for (int k = j; k < i; k++) {
+                            au[last2++] = matrix[k][i];
+                        }
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     @Override
     public int getHeight() {
-        return 0;
+        return n;
     }
 
     @Override
-    public double get(final int i, final int j) {
-        return 0;
+    public double get(int i, int j) {
+        //from 0 to n-1
+        if (j < i) {
+            int firstNum = ia[i] + i - ia[i+1];
+            if (firstNum <= j) {
+                return al[ia[i] - 1 + j - firstNum];
+            } else {
+                return 0;
+            }
+        } else if (j > i) {
+            int firstNum = ia[j] + j - ia[j+1];
+            if (firstNum <= i) {
+                return au[ia[j] - 1 + i - firstNum];
+            } else {
+                return 0;
+            }
+        }
+        return di[i];
     }
 
     @Override
-    public void set(final int i, final int j, final double v) {
+    public void set(int i, int j, double v) {
+        //from 0 to n-1
+        if (j < i) {
+            int firstNum = ia[i] + i - ia[i+1];
+            if (firstNum <= j) {
+                al[ia[i] - 1 + j - firstNum] = v;
+            }
+        } else if (j > i) {
+            int firstNum = ia[j] + j - ia[j+1];
+            if (firstNum <= i) {
+                au[ia[j] - 1 + i - firstNum] = v;
+            }
+        } else {
+            di[i] = v;
+        }
+    }
+
+    @Override
+    public void swap(final int i, final int j) {
 
     }
 
-    public void swap(int i, int j) {
-        List<double[]> list = Arrays.asList(data);
-        Collections.swap(list, i, j);
-        data = (double[][]) list.toArray();
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < getHeight(); i++) {
+            for (int j = 0; j < getWidth(); j++) {
+                sb.append(get(i,j)).append(" ");
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
     }
 }
