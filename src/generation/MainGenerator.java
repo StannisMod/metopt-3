@@ -14,8 +14,10 @@ import java.util.stream.Collectors;
 public class MainGenerator implements Generator {
     @Override
     public void generate() {
-        try (BufferedWriter writer = Files.newBufferedWriter(Path.of("matrix_main.out"), StandardCharsets.UTF_8)) {
+        try (BufferedWriter writer = Files.newBufferedWriter(Path.of("matrix.out"), StandardCharsets.UTF_8)) {
             int n = ThreadLocalRandom.current().nextInt(10, 1000 + 1);
+            writer.write(String.valueOf(n));
+            writer.newLine();
             double[][] matrix = new double[n][n];
             // k = 0, 1, 2,...
             int k = 0;

@@ -2,11 +2,16 @@ import api.Matrix;
 import api.Method;
 import formats.PlainMatrix;
 import formats.ProfileMatrix;
+import generation.Generator;
+import generation.GilbertGenerator;
 import generation.MainGenerator;
+import methods.Gauss;
 import methods.LUMethod;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 
 public class Tester {
@@ -23,32 +28,34 @@ public class Tester {
         return new ProfileMatrix(read.getData());
     }
 
+    private static void check(int test, double[] x) {
+        for (int i = 0; i < x.length; i++) {
+            if (Math.abs(x[i] - (i + 1)) > 0.000001) {
+                throw new AssertionError("Wrong answer on test " + test + ": " + Arrays.toString(x));
+            }
+        }
+    }
+
+    public static void runTest(int i, Generator generator, Method method) {
+        generator.generate();
+        try (BufferedReader reader = Files.newBufferedReader(Path.of("matrix.out"))) {
+            Matrix A = loadMatrix(reader);
+            double[] b = Arrays.stream(reader.readLine().split(" ")).mapToDouble(Double::parseDouble).toArray();
+            double[] solution = method.solve(A, b);
+            check(i, solution);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
-        Matrix matrix = new PlainMatrix(3, 3);
-//        matrix.set(0, 0, 10);
-//        matrix.set(0, 1, -7);
-//        matrix.set(0, 2, 0);
-//        matrix.set(1, 0, -3);
-//        matrix.set(1, 1, 6);
-//        matrix.set(1, 2, 2);
-//        matrix.set(2, 0, 5);
-//        matrix.set(2, 1, -1);
-//        matrix.set(2, 2, 5);
-        matrix.set(0, 0, 1);
-        matrix.set(0, 1, 1);
-        matrix.set(0, 2, 1);
-        matrix.set(1, 0, 1);
-        matrix.set(1, 1, 2);
-        matrix.set(1, 2, 3);
-        matrix.set(2, 0, 1);
-        matrix.set(2, 1, 2);
-        matrix.set(2, 2, 2);
-
-        double[] b = new MainGenerator().getB(matrix);
-        System.out.println(Arrays.toString(b));
-
+        Generator main = new MainGenerator();
+        Generator gilbert = new GilbertGenerator();
         Method lu = new LUMethod();
-        double[] res = lu.solve(matrix, b);
-        System.out.println(Arrays.toString(res));
+        Method gauss = new Gauss();
+        for (int i = 0; i < 10; i++) {
+            runTest(i, gilbert, lu);
+            runTest(i, main, gauss);
+        }
     }
 }
