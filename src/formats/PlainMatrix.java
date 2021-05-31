@@ -12,7 +12,11 @@ public class PlainMatrix implements Matrix {
     private final double[][] data;
 
     public PlainMatrix(int i, int j) {
-        data = new double[i][j];
+        this(new double[i][j]);
+    }
+
+    public PlainMatrix(double[][] data) {
+        this.data = data;
     }
 
     public double[][] getData() {

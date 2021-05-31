@@ -2,6 +2,7 @@ import api.Matrix;
 import api.Method;
 import formats.PlainMatrix;
 import formats.ProfileMatrix;
+import generation.MainGenerator;
 import methods.LUMethod;
 
 import java.io.BufferedReader;
@@ -42,8 +43,12 @@ public class Tester {
         matrix.set(2, 0, 1);
         matrix.set(2, 1, 2);
         matrix.set(2, 2, 2);
+
+        double[] b = new MainGenerator().getB(matrix);
+        System.out.println(Arrays.toString(b));
+
         Method lu = new LUMethod();
-        double[] res = lu.solve(matrix, new double[]{1, 1, 1});
+        double[] res = lu.solve(matrix, b);
         System.out.println(Arrays.toString(res));
     }
 }

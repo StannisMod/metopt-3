@@ -1,11 +1,15 @@
 package generation;
 
+import formats.PlainMatrix;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 public class MainGenerator implements Generator {
     @Override
@@ -18,7 +22,7 @@ public class MainGenerator implements Generator {
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
                     if (i != j) {
-                        matrix[i][j] = ThreadLocalRandom.current().nextInt(-4, 0 + 1);
+                        matrix[i][j] = ThreadLocalRandom.current().nextInt(-4, 1);
                     }
                 }
             }
@@ -49,6 +53,9 @@ public class MainGenerator implements Generator {
                 }
                 writer.newLine();
             }
+
+            writer.write(Arrays.stream(getB(new PlainMatrix(matrix))).mapToObj(String::valueOf).collect(Collectors.joining(" ")));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
