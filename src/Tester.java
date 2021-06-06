@@ -28,10 +28,10 @@ public class Tester {
         return new ProfileMatrix(read.getData());
     }
 
-    private static void check(int test, double[] x) {
+    private static void check(int test, String method, double[] x) {
         for (int i = 0; i < x.length; i++) {
             if (Math.abs(x[i] - (i + 1)) > 0.000001) {
-                throw new AssertionError("Wrong answer on test " + test + ": " + Arrays.toString(x));
+                throw new AssertionError("Wrong answer on test " + test + ", solved with method " + method + ": " + Arrays.toString(x));
             }
         }
     }
@@ -42,7 +42,7 @@ public class Tester {
             Matrix A = loadMatrix(reader);
             double[] b = Arrays.stream(reader.readLine().split(" ")).mapToDouble(Double::parseDouble).toArray();
             double[] solution = method.solve(A, b);
-            check(i, solution);
+            check(i, method.getClass().getName(), solution);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -54,8 +54,19 @@ public class Tester {
         Method lu = new LUMethod();
         Method gauss = new Gauss();
         for (int i = 0; i < 10; i++) {
-            runTest(i, gilbert, lu);
-            runTest(i, main, gauss);
+            try {
+                try {
+                    runTest(i, gilbert, lu);
+                } catch (IllegalStateException e) {
+                    System.err.println("Test " + i + ": error while evaluating LU method: " + e.getMessage());
+                }
+                runTest(i, main, gauss);
+            } catch (AssertionError e) {
+                System.err.println(e.getMessage());
+            } catch (RuntimeException e) {
+                System.err.println("Fatal error on test " + i + ":");
+                e.printStackTrace();
+            }
         }
     }
 }

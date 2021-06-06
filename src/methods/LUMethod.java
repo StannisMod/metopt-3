@@ -2,18 +2,16 @@ package methods;
 
 import api.Matrix;
 import api.Method;
-import formats.LMatrix;
-import formats.UMatrix;
 
 public class LUMethod implements Method {
     @Override
     public double[] solve(final Matrix A, final double[] b) {
         int n = A.getWidth();
         LU(A);
-        System.out.println("L: ");
-        System.out.println(new LMatrix(A));
-        System.out.println("U: ");
-        System.out.println(new UMatrix(A));
+//        System.out.println("L: ");
+//        System.out.println(new LMatrix(A));
+//        System.out.println("U: ");
+//        System.out.println(new UMatrix(A));
 
         double[] y = new double[n];
         for (int i = 0; i < n; i++) {
@@ -53,7 +51,7 @@ public class LUMethod implements Method {
                     }
                     a.set(i, k, (a.get(i, k) - v) / a.get(k, k));
                 } else {
-                    System.err.println("not all major minors of a square matrix are nonzero");
+                    throw new IllegalStateException("not all major minors of a square matrix are nonzero");
                 }
             }
         }
