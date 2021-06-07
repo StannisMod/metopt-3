@@ -4,5 +4,4 @@
 *.iml
 *.class
 *.jar
-*.in
-*.out
+*.log

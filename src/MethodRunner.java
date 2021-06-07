@@ -2,18 +2,16 @@ import api.Matrix;
 import api.Method;
 import formats.PlainMatrix;
 import formats.ProfileMatrix;
-import generation.Generator;
-import generation.GilbertGenerator;
-import generation.MainGenerator;
 import methods.Gauss;
 import methods.LUMethod;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 
-public class Tester {
+public class MethodRunner {
 
     private static Matrix loadMatrix(BufferedReader reader) throws IOException {
         int n = Integer.parseInt(reader.readLine());
@@ -35,9 +33,8 @@ public class Tester {
         }
     }
 
-    public static void runTest(int i, Generator generator, Method method) {
-        generator.generate();
-        try (BufferedReader reader = Files.newBufferedReader(Path.of("matrix.out"))) {
+    public static void runTest(int i, Method method) {
+        try (BufferedReader reader = Files.newBufferedReader(Path.of(i + ".in"))) {
             Matrix A = loadMatrix(reader);
             double[] b = Arrays.stream(reader.readLine().split(" ")).mapToDouble(Double::parseDouble).toArray();
             double[] solution = method.solve(A, b);
@@ -48,36 +45,27 @@ public class Tester {
     }
 
     public static void main(String[] args) {
-        Generator main = new MainGenerator();
-        Generator gilbert = new GilbertGenerator();
         Method lu = new LUMethod();
         Method gauss = new Gauss();
 
-        final int TESTS = 10;
+        final int TESTS = 2;
         int counter = 0;
-        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("tests.log")))) {
-            for (int i = 0; i < TESTS; i++) {
+        for (int i = 0; i < TESTS; i++) {
+            try {
                 try {
-                    try {
-                        runTest(i, gilbert, lu);
-                    } catch (IllegalStateException e) {
-                        writer.write("Test " + i + ": error while evaluating LU method: " + e.getMessage());
-                        writer.newLine();
-                    }
-                    runTest(i, main, gauss);
-                    counter++;
-                    System.out.println("Test " + i + " passed");
-                } catch (AssertionError e) {
-                    writer.write(e.getMessage());
-                    writer.newLine();
-                } catch (RuntimeException e) {
-                    writer.write("Fatal error on test " + i + ":");
-                    writer.write(e.toString());
-                    writer.newLine();
+                    runTest(i, lu);
+                } catch (IllegalStateException e) {
+                    System.err.println("Test " + i + ": error while evaluating LU method: " + e.getMessage());
                 }
+                runTest(i, gauss);
+                counter++;
+                System.out.println("Test " + i + " passed");
+            } catch (AssertionError e) {
+                System.err.println(e.getMessage());
+            } catch (RuntimeException e) {
+                System.err.println("Fatal error on test " + i + ":");
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
         System.out.println("--------------------------------------");
