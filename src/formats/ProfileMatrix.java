@@ -97,11 +97,15 @@ public class ProfileMatrix implements Matrix{
             int firstNum = ia[i] + i - ia[i+1];
             if (firstNum <= j) {
                 al[ia[i] - 1 + j - firstNum] = v;
+            } else {
+                System.err.println("Out of bounds");
             }
         } else if (j > i) {
             int firstNum = ia[j] + j - ia[j+1];
             if (firstNum <= i) {
                 au[ia[j] - 1 + i - firstNum] = v;
+            } else {
+                System.err.println("Out of bounds");
             }
         } else {
             di[i] = v;
