@@ -59,7 +59,7 @@ public class Tester {
 
         final int TESTS = 10;
         int counter = 0;
-        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("tests.log")))) {
+        try (PrintWriter writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream("tests.log"))), true)) {
             for (int i = 0; i < TESTS; i++) {
                 try {
                     runTest(i, main, gauss, false);
@@ -77,12 +77,11 @@ public class Tester {
                     counter++;
                     System.out.println("Test " + i + " passed");
                 } catch (AssertionError e) {
-                    writer.write(e.getMessage());
-                    writer.newLine();
+                    writer.println(e.getMessage());
                 } catch (RuntimeException e) {
-                    writer.write("Fatal error on test " + i + ":");
-                    writer.write(e.toString());
-                    writer.newLine();
+                    writer.print("Fatal error on test " + i + ": ");
+                    writer.println(e);
+                    e.printStackTrace(writer);
                 }
             }
         } catch (IOException e) {

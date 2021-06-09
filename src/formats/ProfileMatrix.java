@@ -9,6 +9,8 @@ public class ProfileMatrix implements Matrix {
     double[] al;
     double[] au;
 
+    public int outOfBounds = 0;
+
     @Override
     public int getWidth() {
         return n;
@@ -98,14 +100,16 @@ public class ProfileMatrix implements Matrix {
             if (firstNum <= j) {
                 al[ia[i] - 1 + j - firstNum] = v;
             } else {
-                System.err.println("Out of bounds");
+                //System.err.println("Out of bounds");
+                outOfBounds++;
             }
         } else if (j > i) {
             int firstNum = ia[j] + j - ia[j + 1];
             if (firstNum <= i) {
                 au[ia[j] - 1 + i - firstNum] = v;
             } else {
-                System.err.println("Out of bounds");
+                //System.err.println("Out of bounds");
+                outOfBounds++;
             }
         } else {
             di[i] = v;
