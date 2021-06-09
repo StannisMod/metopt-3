@@ -5,7 +5,7 @@ import api.Method;
 
 public class LUMethod implements Method {
     @Override
-    public double[] solve(final Matrix A, final double[] b) {
+    public strictfp double[] solve(final Matrix A, final double[] b) {
         int n = A.getWidth();
         LU(A);
 //        System.out.println("L: ");
@@ -33,7 +33,7 @@ public class LUMethod implements Method {
         return x;
     }
 
-    private void LU(Matrix a) {
+    private strictfp void LU(Matrix a) {
         int n = a.getWidth();
         for (int k = 0; k < n; k++) {
             for (int j = k; j < n; j++) {

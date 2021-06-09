@@ -2,7 +2,6 @@ package methods;
 
 import api.Matrix;
 import api.Method;
-import formats.PlainMatrix;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,7 +9,7 @@ import java.util.Collections;
 public class Gauss implements Method {
 
     @Override
-    public double[] solve(final Matrix A, final double[] b) {
+    public strictfp double[] solve(final Matrix A, final double[] b) {
         double curP = 1e-30, coef = 0;
         double[] results = new double[Math.max(A.getHeight(), A.getWidth())];
         ArrayList<Double> params = new ArrayList<Double>(Collections.nCopies(A.getHeight(), 0.0));
