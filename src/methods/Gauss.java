@@ -11,7 +11,7 @@ public class Gauss implements Method {
 
     @Override
     public double[] solve(final Matrix A, final double[] b) {
-        double curP = 1e-11, coef = 0;
+        double curP = 1e-30, coef = 0;
         double[] results = new double[Math.max(A.getHeight(), A.getWidth())];
         ArrayList<Double> params = new ArrayList<Double>(Collections.nCopies(A.getHeight(), 0.0));
         int maxIndex = 0;

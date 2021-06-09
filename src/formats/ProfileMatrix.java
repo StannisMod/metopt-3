@@ -2,7 +2,7 @@ package formats;
 
 import api.Matrix;
 
-public class ProfileMatrix implements Matrix{
+public class ProfileMatrix implements Matrix {
     int n;
     double[] di;
     int[] ia;
@@ -14,10 +14,10 @@ public class ProfileMatrix implements Matrix{
         return n;
     }
 
-    public ProfileMatrix (double[][] matrix) {
+    public ProfileMatrix(double[][] matrix) {
         n = matrix.length;
         di = new double[n];
-        ia = new int[n+1];
+        ia = new int[n + 1];
         int last = 0;
         int last2 = 0;
         ia[0] = 1;
@@ -32,11 +32,11 @@ public class ProfileMatrix implements Matrix{
                         break;
                     }
                 }
-                ia[i+1] = ia[i] + i - notZero;
+                ia[i + 1] = ia[i] + i - notZero;
             }
         }
-        al = new double[ia[n]-1];
-        au = new double[ia[n]-1];
+        al = new double[ia[n] - 1];
+        au = new double[ia[n] - 1];
         for (int i = 0; i < n; i++) {
             di[i] = matrix[i][i];
             if (i >= 1) {
@@ -73,14 +73,14 @@ public class ProfileMatrix implements Matrix{
     public double get(int i, int j) {
         //from 0 to n-1
         if (j < i) {
-            int firstNum = ia[i] + i - ia[i+1];
+            int firstNum = ia[i] + i - ia[i + 1];
             if (firstNum <= j) {
                 return al[ia[i] - 1 + j - firstNum];
             } else {
                 return 0;
             }
         } else if (j > i) {
-            int firstNum = ia[j] + j - ia[j+1];
+            int firstNum = ia[j] + j - ia[j + 1];
             if (firstNum <= i) {
                 return au[ia[j] - 1 + i - firstNum];
             } else {
@@ -94,14 +94,14 @@ public class ProfileMatrix implements Matrix{
     public void set(int i, int j, double v) {
         //from 0 to n-1
         if (j < i) {
-            int firstNum = ia[i] + i - ia[i+1];
+            int firstNum = ia[i] + i - ia[i + 1];
             if (firstNum <= j) {
                 al[ia[i] - 1 + j - firstNum] = v;
             } else {
                 System.err.println("Out of bounds");
             }
         } else if (j > i) {
-            int firstNum = ia[j] + j - ia[j+1];
+            int firstNum = ia[j] + j - ia[j + 1];
             if (firstNum <= i) {
                 au[ia[j] - 1 + i - firstNum] = v;
             } else {
@@ -114,7 +114,16 @@ public class ProfileMatrix implements Matrix{
 
     @Override
     public void swap(final int i, final int j) {
-
+        double[] tmp = new double[this.getWidth()];
+        for (int k = 0; k < this.getWidth(); k++) {
+            tmp[k] = this.get(i, k);
+        }
+        for (int k = 0; k < this.getWidth(); k++) {
+            this.set(i, k, this.get(j, k));
+        }
+        for (int k = 0; k < this.getWidth(); k++) {
+            this.set(j, k, tmp[k]);
+        }
     }
 
     @Override
@@ -122,7 +131,7 @@ public class ProfileMatrix implements Matrix{
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < getHeight(); i++) {
             for (int j = 0; j < getWidth(); j++) {
-                sb.append(get(i,j)).append(" ");
+                sb.append(get(i, j)).append(" ");
             }
             sb.append("\n");
         }
