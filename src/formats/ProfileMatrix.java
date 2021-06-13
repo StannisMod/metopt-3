@@ -40,26 +40,27 @@ public class ProfileMatrix implements Matrix {
         for (int i = 0; i < n; i++) {
             di[i] = matrix[i][i];
             if (i >= 1) {
-                int notZero1 = 0, notZero2 = 0;
+//                int notZero1 = 0, notZero2 = 0;
                 for (int j = 0; j < i; j++) {
                     if (matrix[i][j] != 0) {
-                        notZero1 = j;
+//                        notZero1 = j;
                         for (int k = j; k < i; k++) {
                             al[last++] = matrix[i][k];
-                        }
-                        break;
-                    }
-                }
-
-                for (int j = 0; j < i; j++) {
-                    if (matrix[j][i] != 0) {
-                        notZero2 = j;
-                        for (int k = j; k < i; k++) {
                             au[last2++] = matrix[k][i];
                         }
                         break;
                     }
                 }
+
+//                for (int j = 0; j < i; j++) {
+//                    if (matrix[j][i] != 0) {
+////                        notZero2 = j;
+//                        for (int k = j; k < i; k++) {
+//                            au[last2++] = matrix[k][i];
+//                        }
+//                        break;
+//                    }
+//                }
             }
         }
     }
@@ -98,14 +99,14 @@ public class ProfileMatrix implements Matrix {
             if (firstNum <= j) {
                 al[ia[i] - 1 + j - firstNum] = v;
             } else {
-                System.err.println("Out of bounds");
+                //System.err.println("Out of bounds");
             }
         } else if (j > i) {
             int firstNum = ia[j] + j - ia[j + 1];
             if (firstNum <= i) {
                 au[ia[j] - 1 + i - firstNum] = v;
             } else {
-                System.err.println("Out of bounds");
+                //System.err.println("Out of bounds");
             }
         } else {
             di[i] = v;

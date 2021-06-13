@@ -16,7 +16,7 @@ public class GilbertGenerator implements Generator {
     @Override
     public void generate() {
         try (BufferedWriter writer = Files.newBufferedWriter(Path.of("matrix.out"), StandardCharsets.UTF_8)) {
-            int n = ThreadLocalRandom.current().nextInt(10, 1000 + 1);
+            int n = ThreadLocalRandom.current().nextInt(3, 9);
             writer.write(String.valueOf(n));
             writer.newLine();
             double[][] matrix = new double[n][n];

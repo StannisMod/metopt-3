@@ -16,18 +16,43 @@ public class MainGenerator implements Generator {
     public void generate() {
         try (BufferedWriter writer = Files.newBufferedWriter(Path.of("matrix.out"), StandardCharsets.UTF_8)) {
             int n = ThreadLocalRandom.current().nextInt(10, 1000 + 1);
+//            int n = 6;
             writer.write(String.valueOf(n));
             writer.newLine();
             double[][] matrix = new double[n][n];
             // k = 0, 1, 2,...
             int k = 0;
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < n; j++) {
-                    if (i != j) {
+
+            int[] ia = new int[n + 1];
+            ia[0] = 1;
+            ia[1] = 1;
+            for (int i = 2; i < n+1; i++) {
+                ia[i] = ia[i-1] + ThreadLocalRandom.current().nextInt(0, i+1);
+            }
+            for (int i = 1; i < n; i++) {
+                for (int j = 0; j < i; j++) {
+                    if (i-(ia[i+1]-ia[i]) < j) {
                         matrix[i][j] = ThreadLocalRandom.current().nextInt(-4, 1);
+//                        matrix[j][i] = matrix[i][j];
+                        matrix[j][i] = ThreadLocalRandom.current().nextInt(-4, 1);
+                    } else if (i-(ia[i+1]-ia[i]) == j) {
+                        matrix[i][j] = ThreadLocalRandom.current().nextInt(-4, 0);
+//                        matrix[j][i] = matrix[i][j];
+                        matrix[j][i] = ThreadLocalRandom.current().nextInt(-4, 0);
+                    }  else {
+                        matrix[i][j] = 0;
+                        matrix[j][i] = 0;
                     }
                 }
             }
+
+//            for (int i = 0; i < n; i++) {
+//                for (int j = 0; j < n; j++) {
+//                    if (i != j) {
+//                        matrix[i][j] = ThreadLocalRandom.current().nextInt(-4, 1);
+//                    }
+//                }
+//            }
             for (int i = 0; i < n; i++) {
                 if (i == 0) {
                     double aii = 0;
