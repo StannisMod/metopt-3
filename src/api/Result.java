@@ -1,5 +1,7 @@
 package api;
 
+import java.util.Arrays;
+
 public class Result {
 
     public final double[] solution;
@@ -16,5 +18,9 @@ public class Result {
             sum += Math.pow(solution[i] - i - 1, 2);
         }
         return Math.sqrt(sum);
+    }
+
+    public double getSolutionNorm() {
+        return Math.sqrt(Arrays.stream(solution).map(x -> x * x).reduce(Double::sum).orElse(0));
     }
 }
