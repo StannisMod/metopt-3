@@ -1,12 +1,10 @@
-package generation;
-
-import api.Matrix;
+package api;
 
 import java.util.stream.IntStream;
 
 public interface Generator {
 
-    void generate();
+    void generate(int n, int k);
 
     default double[] getB(Matrix m) {
         int n = m.getWidth();

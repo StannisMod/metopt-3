@@ -1,5 +1,6 @@
 package generation;
 
+import api.Generator;
 import formats.PlainMatrix;
 
 import java.io.BufferedWriter;
@@ -13,15 +14,13 @@ import java.util.stream.Collectors;
 
 public class MainGenerator implements Generator {
     @Override
-    public void generate() {
+    public void generate(int n, int k) {
         try (BufferedWriter writer = Files.newBufferedWriter(Path.of("matrix.out"), StandardCharsets.UTF_8)) {
-            int n = ThreadLocalRandom.current().nextInt(10, 1000 + 1);
 //            int n = 6;
             writer.write(String.valueOf(n));
             writer.newLine();
             double[][] matrix = new double[n][n];
             // k = 0, 1, 2,...
-            int k = 0;
 
             int[] ia = new int[n + 1];
             ia[0] = 1;
