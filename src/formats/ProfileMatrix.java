@@ -9,8 +9,6 @@ public class ProfileMatrix implements Matrix {
     double[] al;
     double[] au;
 
-    public int outOfBounds = 0;
-
     @Override
     public int getWidth() {
         return n;
@@ -42,26 +40,27 @@ public class ProfileMatrix implements Matrix {
         for (int i = 0; i < n; i++) {
             di[i] = matrix[i][i];
             if (i >= 1) {
-                int notZero1 = 0, notZero2 = 0;
+//                int notZero1 = 0, notZero2 = 0;
                 for (int j = 0; j < i; j++) {
                     if (matrix[i][j] != 0) {
-                        notZero1 = j;
+//                        notZero1 = j;
                         for (int k = j; k < i; k++) {
                             al[last++] = matrix[i][k];
-                        }
-                        break;
-                    }
-                }
-
-                for (int j = 0; j < i; j++) {
-                    if (matrix[j][i] != 0) {
-                        notZero2 = j;
-                        for (int k = j; k < i; k++) {
                             au[last2++] = matrix[k][i];
                         }
                         break;
                     }
                 }
+
+//                for (int j = 0; j < i; j++) {
+//                    if (matrix[j][i] != 0) {
+////                        notZero2 = j;
+//                        for (int k = j; k < i; k++) {
+//                            au[last2++] = matrix[k][i];
+//                        }
+//                        break;
+//                    }
+//                }
             }
         }
     }
@@ -101,7 +100,6 @@ public class ProfileMatrix implements Matrix {
                 al[ia[i] - 1 + j - firstNum] = v;
             } else {
                 //System.err.println("Out of bounds");
-                outOfBounds++;
             }
         } else if (j > i) {
             int firstNum = ia[j] + j - ia[j + 1];
@@ -109,7 +107,6 @@ public class ProfileMatrix implements Matrix {
                 au[ia[j] - 1 + i - firstNum] = v;
             } else {
                 //System.err.println("Out of bounds");
-                outOfBounds++;
             }
         } else {
             di[i] = v;
